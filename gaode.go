@@ -32,7 +32,6 @@ func getLocationForPlace(address string) (location string, err error) {
 	// @description  获取地址的经度纬度
 	// @auth      xblzbjs             时间（2021/1/27）
 	// @param     address         string        结构化地址信息:省份＋城市＋区县＋城镇＋乡村＋街道＋门牌号码
-
 	// @return    location        string        经度,纬度
 	//            err			  error			错误信息
 

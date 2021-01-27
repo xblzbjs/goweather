@@ -47,5 +47,5 @@ Wednesday  2/ 3   High: 20.85C Low: 16.73C | Humidity: 59% | 多云
 ## TODO:
 
 - 完善高德地图地理编码
-- 高德天气查询G
+- 高德天气查询
 - Google Map PlatForm  API整合
