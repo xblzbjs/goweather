@@ -7,8 +7,8 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"io/ioutil"
 	"net/url"
 	"strconv"
 	"strings"
@@ -54,41 +54,41 @@ func getLocationForPlace(address string) (location string, err error) {
 		return location, err
 	}
 	if geocode.Status != "1" || len(geocode.Geocodes) < 1 {
-		return location, err
+		return location, errors.New(fmt.Sprintf("GetLocationRequest Failed: %s", geocode.Status))
 	}
 
 	return geocode.Geocodes[0].Location, err
 }
 
-func getLocation2(address string, city string) (location string, err error) {
-	escAddress := url.QueryEscape(address)
-	escCity := url.QueryEscape(city)
-	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s",
-		GaoDeApiKey,
-		escAddress,
-		escCity,
-	)
-	r, err := httpClient.Get(u)
-	if err != nil {
-		return location, err
-	}
-
-	defer r.Body.Close()
-	// json
-	var geocode GaoDeGeocodeResponse
-
-	data, err := ioutil.ReadAll(r.Body)
-	err = json.Unmarshal(data, &geocode)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(string(data))
-	if geocode.Status != "1" || len(geocode.Geocodes) < 1 {
-		return location, err
-	}
-
-	return geocode.Geocodes[0].Location, err
-}
+//func getLocation2(address string, city string) (location string, err error) {
+//	escAddress := url.QueryEscape(address)
+//	escCity := url.QueryEscape(city)
+//	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s",
+//		GaoDeApiKey,
+//		escAddress,
+//		escCity,
+//	)
+//	r, err := httpClient.Get(u)
+//	if err != nil {
+//		return location, err
+//	}
+//
+//	defer r.Body.Close()
+//	// json
+//	var geocode GaoDeGeocodeResponse
+//
+//	data, err := ioutil.ReadAll(r.Body)
+//	err = json.Unmarshal(data, &geocode)
+//	if err != nil {
+//		fmt.Println(err)
+//	}
+//	fmt.Println(string(data))
+//	if geocode.Status != "1" || len(geocode.Geocodes) < 1 {
+//		return location, err
+//	}
+//
+//	return geocode.Geocodes[0].Location, err
+//}
 
 func LocationToLatLon(location string) (lat float64, lon float64) {
 

@@ -197,7 +197,5 @@ func getWeatherForLatLon(lat float64, lon float64, units string, period string) 
 		return weather, errors.New(fmt.Sprintf("OpenWeatherRequest Failed: %s", r.Status))
 	}
 
-	err = json.NewDecoder(r.Body).Decode(&weather)
-
-	return weather, err
+	return weather, json.NewDecoder(r.Body).Decode(&weather)
 }
