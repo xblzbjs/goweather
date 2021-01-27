@@ -5,5 +5,5 @@
 
 package main
 
-const GaoDeApiKey = "YOUR_GAODEAPI_KEY"
-const OpenWeatherApiKey = "YOUR_OPENWEATHERAPI_KEY"
+const GaoDeApiKey = "5b17489a1ab8e8034e8546a7389e5ff6"
+const OpenWeatherApiKey = "f5bd4527d370aeab1a5686dceafff5ce"

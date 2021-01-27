@@ -6,7 +6,7 @@
 
 ### 第一步
 
-在`constants,go`文件中输入你的OpenWeatherApiKey（需要申请）
+在`constants.go`文件中输入你的OpenWeatherApiKey（需要申请）
 
 ### 第二步
 
