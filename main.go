@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/xblzbjs/goweather/cli"
 	"github.com/xblzbjs/goweather/gaode"
 	"log"
 	"strings"
 
 	//"log"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -24,14 +24,6 @@ const (
 	UnitsMetric           = "metric"
 )
 
-func exitInvalidArguments() {
-	// 若不规范的命令行参数，退出
-	println("\nUsage: goweather [ -period=current|hourly|daily ] [ -units=C(摄氏度)|F(华氏度) ] <地点>...\n")
-	flag.Usage()
-	println()
-	os.Exit(2)
-}
-
 func main() {
 	httpClient = http.Client{
 		Timeout: time.Second * 10,
@@ -45,7 +37,7 @@ func main() {
 	places := flag.Args() //地址
 
 	if len(places) < 1 {
-		exitInvalidArguments()
+		cli.ExitInvalidArguments()
 	}
 	// un(单位) -> string
 	// 判断摄氏度和华氏度
@@ -55,14 +47,14 @@ func main() {
 	} else if strings.ToUpper(*units) == "F" {
 		un = UnitsImperial
 	} else {
-		exitInvalidArguments()
+		cli.ExitInvalidArguments()
 	}
 
 	// period错误处理
 	if *period != WeatherPeriodCurrent &&
 		*period != WeatherPeriodHourly &&
 		*period != WeatherPeriodDaily {
-		exitInvalidArguments()
+		cli.ExitInvalidArguments()
 	}
 
 	// 异步

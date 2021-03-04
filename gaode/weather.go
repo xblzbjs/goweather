@@ -4,6 +4,14 @@
 // @Update  		2021-3-4
 package gaode
 
+import (
+	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/xblzbjs/goweather/config"
+)
+
+
 // LivesResult 实况天气数据信息
 type LivesResult struct {
 	Province      string
@@ -49,3 +57,19 @@ type WeatherResponse struct {
 	Forecast []ForecastResult
 }
 
+// getWeatherForCity 获取城市天气
+func getWeatherForCity(city string) (weather WeatherResponse, err error) {
+	u := fmt.Sprintf("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s",
+		config.GaoDeApiKey,
+		city,
+	)
+	res, err := httpClient.Get(u)
+	if err != nil {
+		return weather, err
+	}
+	defer res.Body.Close()
+	if res.Status != "1"{
+		return weather, errors.New(fmt.Sprintf("GaoDeWeatherRequest Failed: %s", res.Status))
+	}
+	return weather, json.NewDecoder(res.Body).Decode(&weather)
+}
