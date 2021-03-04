@@ -1,9 +1,9 @@
-// @Title  			gaode.go
-// @Description  	处理高德地图定义的API
+// @Title  			geocode.go
+// @Description  	处理高德地图地理编码的API
 // @Author  		xblzbjs
 // @Update  		2021-1-27
 
-package main
+package gaode
 
 import (
 	"encoding/json"
@@ -14,18 +14,34 @@ import (
 	"strings"
 )
 
-// 高德地图地理编码geocodes对象
-type GaoDeGeocodeResult struct {
-	Location string
-	// TODO：添加其他的字段
+// GeocodeResult 地理编码结构体
+type GeocodeResult struct {
+	FormattedAddress string
+	Country          string
+	Province         string
+	Citycode         string
+	City             string
+	District         string
+	// TODO：添加township,neighborhood结构体,building结构体
+	Adcode           string
+	Street           string
+	Number           string
+	Location         string
+	Level            string
 }
 
-// 高德地图地理编码响应对象
-type GaoDeGeocodeResponse struct {
+//
+
+// GeocodeResponse 高德地图地理编码响应对象
+type GeocodeResponse struct {
 	Status   string
-	Geocodes []GaoDeGeocodeResult
+	Count    string
+	Info     string
+	Infocode string
+	Geocodes []GeocodeResult
 }
 
+// getLocationForPlace
 func getLocationForPlace(address string) (location string, err error) {
 
 	// @title     getLocationForPlace
@@ -37,10 +53,10 @@ func getLocationForPlace(address string) (location string, err error) {
 
 	escAddress := url.QueryEscape(address)
 	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s",
-		GaoDeApiKey,
+		main.GaoDeApiKey,
 		escAddress,
 	)
-	r, err := httpClient.Get(u)
+	r, err := main.httpClient.Get(u)
 	if err != nil {
 		return location, err
 	}
@@ -48,7 +64,7 @@ func getLocationForPlace(address string) (location string, err error) {
 	defer r.Body.Close()
 
 	// 定义高德地图地理编码响应对象
-	var geocode GaoDeGeocodeResponse
+	var geocode GeocodeResponse
 	err = json.NewDecoder(r.Body).Decode(&geocode)
 	if err != nil {
 		return location, err

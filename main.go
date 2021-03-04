@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/xblzbjs/goweather/gaode"
 	"log"
 	"strings"
 
@@ -99,11 +100,11 @@ func main() {
 }
 
 func getWeatherForPlace(place string, units string, period string) (w OpenWeatherResponseOneCall, err error) {
-	location, err := getLocationForPlace(place)
+	location, err := gaode.getLocationForPlace(place)
 	if err != nil {
 		return w, err
 	}
-	lat, lon := LocationToLatLon(location)
+	lat, lon := gaode.LocationToLatLon(location)
 	return getWeatherForLatLon(lat, lon, units, period)
 }
 
