@@ -8,8 +8,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/xblzbjs/goweather/config"
+	"github.com/xblzbjs/goweather/configs"
 )
+
 
 
 // LivesResult 实况天气数据信息
@@ -31,10 +32,10 @@ type ForecastResult struct {
 	Adcode     string
 	Province   string
 	Reporttime string
-	Casts      []CastsResult
+	Casts      *[]CastsResult
 }
 
-// CastsResult 预报数据list结构，元素cast,按顺序为当天、第二天、第三天的预报数据
+// CastsResult 预报数据list结构，元素cast,按顺序为当天、第二天、第三天的预报数据,可预测未来三天的天气数据
 type CastsResult struct {
 	Data         string
 	Week         string
@@ -53,14 +54,20 @@ type WeatherResponse struct {
 	Count    string
 	Info     string
 	Infocode string
-	Lives    []LivesResult
-	Forecast []ForecastResult
+	Lives    *[]LivesResult
+	Forecast *[]ForecastResult
+}
+
+type WeatherResponseOneCall struct {
+	Current *OpenWeatherResponseCurrent
+	Hourly  *[]OpenWeatherResponseHourly
+	Daily   *[]OpenWeatherResponseDaily
 }
 
 // getWeatherForCity 获取城市天气
 func getWeatherForCity(city string) (weather WeatherResponse, err error) {
 	u := fmt.Sprintf("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s",
-		config.GaoDeApiKey,
+		configs.Key.OpenWeatherKey,
 		city,
 	)
 	res, err := httpClient.Get(u)
@@ -72,4 +79,11 @@ func getWeatherForCity(city string) (weather WeatherResponse, err error) {
 		return weather, errors.New(fmt.Sprintf("GaoDeWeatherRequest Failed: %s", res.Status))
 	}
 	return weather, json.NewDecoder(res.Body).Decode(&weather)
+}
+
+
+// printWeatherResult 打印天气
+func printWeatherResult(city string) {
+	// 打印天气详情
+	fmt.Printf("%s的天气:\n", city)
 }

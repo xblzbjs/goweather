@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"github.com/xblzbjs/goweather/cli"
 	"github.com/xblzbjs/goweather/gaode"
+	"github.com/xblzbjs/goweather/openweather"
 	"log"
+	"os"
 	"strings"
 
-	//"log"
 	"net/http"
 	"time"
 )
@@ -24,47 +25,56 @@ const (
 	UnitsMetric           = "metric"
 )
 
+func ExitInvalidArguments() {
+	// 若不规范的命令行参数，退出
+	println("\nUsage: goweather [ -period=current|hourly|daily ] [ -units=C(摄氏度)|F(华氏度) ] <地点>...\n")
+	flag.Usage()
+	println()
+	os.Exit(2)
+}
+
 func main() {
 	httpClient = http.Client{
 		Timeout: time.Second * 10,
 	}
 
-	//命令行
+	//命令行参数
 	units := flag.String("units", "C", "C(摄氏度) | F(华氏度)")
-	period := flag.String("period", "current", "current | hourly | daily")
+	//period := flag.String("period", "current", "current | hourly | daily")
 	flag.Parse()
-
+	// 获取地址
 	places := flag.Args() //地址
 
 	if len(places) < 1 {
 		cli.ExitInvalidArguments()
 	}
+
 	// un(单位) -> string
 	// 判断摄氏度和华氏度
-	var un string
-	if strings.ToUpper(*units) == "C" {
-		un = UnitsMetric
-	} else if strings.ToUpper(*units) == "F" {
-		un = UnitsImperial
-	} else {
-		cli.ExitInvalidArguments()
-	}
-
-	// period错误处理
-	if *period != WeatherPeriodCurrent &&
-		*period != WeatherPeriodHourly &&
-		*period != WeatherPeriodDaily {
-		cli.ExitInvalidArguments()
-	}
+	//var un string
+	//if strings.ToUpper(*units) == "C" {
+	//	un = UnitsMetric
+	//} else if strings.ToUpper(*units) == "F" {
+	//	un = UnitsImperial
+	//} else {
+	//	cli.ExitInvalidArguments()
+	//}
+	//
+	//// period错误处理
+	//if *period != WeatherPeriodCurrent &&
+	//	*period != WeatherPeriodHourly &&
+	//	*period != WeatherPeriodDaily {
+	//	cli.ExitInvalidArguments()
+	//}
 
 	// 异步
-	chs := make([]chan OpenWeatherResponseOneCall, len(places))
+	chs := make([]chan openweather.OpenWeatherResponseOneCall, len(places))
 	errChs := make([]chan error, len(places))
 
 	start := time.Now()
 
 	for i, place := range places {
-		chs[i] = make(chan OpenWeatherResponseOneCall, 1)
+		chs[i] = make(chan openweather.OpenWeatherResponseOneCall, 1)
 		errChs[i] = make(chan error, 1)
 		go concurrentGetWeatherForPlace(place, un, *period, chs[i], errChs[i])
 	}
@@ -91,35 +101,12 @@ func main() {
 
 }
 
-func getWeatherForPlace(place string, units string, period string) (w OpenWeatherResponseOneCall, err error) {
-	location, err := gaode.getLocationForPlace(place)
-	if err != nil {
-		return w, err
-	}
-	lat, lon := gaode.LocationToLatLon(location)
-	return getWeatherForLatLon(lat, lon, units, period)
-}
 
-func concurrentGetWeatherForPlace(place string, units string, period string, wCh chan OpenWeatherResponseOneCall, errCh chan error) {
+
+func concurrentGetWeatherForPlace(place string, units string, period string, wCh chan openweather.OpenWeatherResponseOneCall, errCh chan error) {
 	w, err := getWeatherForPlace(place, units, period)
 	wCh <- w
 	errCh <- err
 }
 
-func printWeatherResult(w interface{}, place string, units string) {
-	// 打印天气详情
-	fmt.Printf("%s的天气:\n", place)
 
-	switch w.(type) {
-	case OpenWeatherResponseCurrent:
-		fmt.Print(w.(OpenWeatherResponseCurrent).Output(units))
-	case []OpenWeatherResponseHourly:
-		for _, h := range w.([]OpenWeatherResponseHourly) {
-			fmt.Print(h.Output(units))
-		}
-	case []OpenWeatherResponseDaily:
-		for _, h := range w.([]OpenWeatherResponseDaily) {
-			fmt.Print(h.Output(units))
-		}
-	}
-}

@@ -9,10 +9,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/xblzbjs/goweather/config"
+	"github.com/xblzbjs/goweather/configs"
 	"net/url"
 )
 
+var gaoDeKey = configs.Key.GaoDeKey
 // GeocodeResult 地理编码结构体
 type GeocodeResult struct {
 	FormattedAddress string
@@ -40,12 +41,14 @@ type GeocodeResponse struct {
 	Geocodes []GeocodeResult
 }
 
-// getLocationForAddress 获取地址的地理位置
-func getLocationForAddress(address string) (location string, err error) {
+// getLocationForAddress 将详细的结构化地址转换为高德经纬度坐标
+func getLocationForAddress(address string, city string) (location string, err error) {
 	escAddress := url.QueryEscape(address)
-	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s",
-		config.GaoDeApiKey,
+	escCity := url.QueryEscape(city)
+	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s",
+		gaoDeKey,
 		escAddress,
+		escCity,
 	)
 	res, err := httpClient.Get(u)
 	if err != nil {
@@ -55,7 +58,6 @@ func getLocationForAddress(address string) (location string, err error) {
 	defer res.Body.Close()
 
 	// 定义高德地图地理编码响应对象
-
 	err = json.NewDecoder(res.Body).Decode(&geocode)
 	if err != nil {
 		return location, err
@@ -66,3 +68,4 @@ func getLocationForAddress(address string) (location string, err error) {
 
 	return geocode.Geocodes[0].Location, err
 }
+
