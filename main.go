@@ -4,7 +4,6 @@ import (
 	"goweather/config"
 	"log"
 
-	//"log"
 	"net/http"
 
 	"github.com/spf13/viper"

@@ -13,6 +13,7 @@ import (
 func TestGetLocationForAddress(t *testing.T) {
 	var httpClient http.Client
 	var geocode = gaode.GeocodeResponse{}
+
 	escAddress := url.QueryEscape("北京市朝阳区阜通东大街6号")
 	escCity := url.QueryEscape("北京")
 	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s",

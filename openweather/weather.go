@@ -1,9 +1,10 @@
-package main
+package openweather
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/xblzbjs/goweather/gaode"
 	"strings"
 	"time"
 )
@@ -43,9 +44,9 @@ func (w OpenWeatherResponseCurrent) Output(units string) string {
 	var unitAbbr string
 
 	switch units {
-	case UnitsMetric:
+	case main.UnitsMetric:
 		unitAbbr = "C"
-	case UnitsImperial:
+	case main.UnitsImperial:
 		unitAbbr = "F"
 	}
 
@@ -83,9 +84,9 @@ func (w OpenWeatherResponseHourly) Output(units string) string {
 	var unitAbbr string
 
 	switch units {
-	case UnitsMetric:
+	case main.UnitsMetric:
 		unitAbbr = "C"
-	case UnitsImperial:
+	case main.UnitsImperial:
 		unitAbbr = "F"
 	}
 
@@ -139,9 +140,9 @@ func (w OpenWeatherResponseDaily) Output(units string) string {
 	var unitAbbr string
 
 	switch units {
-	case UnitsMetric:
+	case main.UnitsMetric:
 		unitAbbr = "C"
-	case UnitsImperial:
+	case main.UnitsImperial:
 		unitAbbr = "F"
 	}
 
@@ -166,16 +167,16 @@ type OpenWeatherResponseOneCall struct {
 }
 
 func getWeatherForLatLon(lat float64, lon float64, units string, period string) (weather OpenWeatherResponseOneCall, err error) {
-	exclude := []string{WeatherPeriodMinutely}
+	exclude := []string{main.WeatherPeriodMinutely}
 
-	if period != WeatherPeriodCurrent {
-		exclude = append(exclude, WeatherPeriodCurrent)
+	if period != main.WeatherPeriodCurrent {
+		exclude = append(exclude, main.WeatherPeriodCurrent)
 	}
-	if period != WeatherPeriodHourly {
-		exclude = append(exclude, WeatherPeriodHourly)
+	if period != main.WeatherPeriodHourly {
+		exclude = append(exclude, main.WeatherPeriodHourly)
 	}
-	if period != WeatherPeriodDaily {
-		exclude = append(exclude, WeatherPeriodDaily)
+	if period != main.WeatherPeriodDaily {
+		exclude = append(exclude, main.WeatherPeriodDaily)
 	}
 
 	excString := strings.Join(exclude, ",")
@@ -187,7 +188,7 @@ func getWeatherForLatLon(lat float64, lon float64, units string, period string) 
 		excString,
 		units,
 	)
-	r, err := httpClient.Get(u)
+	r, err := main.httpClient.Get(u)
 	if err != nil {
 		return weather, err
 	}
@@ -198,4 +199,37 @@ func getWeatherForLatLon(lat float64, lon float64, units string, period string) 
 	}
 
 	return weather, json.NewDecoder(r.Body).Decode(&weather)
+}
+
+func getWeatherForPlace(place string, units string, period string) (w openweather.OpenWeatherResponseOneCall, err error) {
+	location, err := gaode.getLocationForPlace(place)
+	if err != nil {
+		return w, err
+	}
+	lat, lon := gaode.LocationToLatLon(location)
+	return openweather.getWeatherForLatLon(lat, lon, units, period)
+}
+
+func concurrentGetWeatherForPlace(place string, units string, period string, wCh chan openweather.OpenWeatherResponseOneCall, errCh chan error) {
+	w, err := getWeatherForPlace(place, units, period)
+	wCh <- w
+	errCh <- err
+}
+
+func printWeatherResult(w interface{}, place string, units string) {
+	// 打印天气详情
+	fmt.Printf("%s的天气:\n", place)
+
+	switch w.(type) {
+	case OpenWeatherResponseCurrent:
+		fmt.Print(w.(OpenWeatherResponseCurrent).Output(units))
+	case []OpenWeatherResponseHourly:
+		for _, h := range w.([]OpenWeatherResponseHourly) {
+			fmt.Print(h.Output(units))
+		}
+	case []OpenWeatherResponseDaily:
+		for _, h := range w.([]OpenWeatherResponseDaily) {
+			fmt.Print(h.Output(units))
+		}
+	}
 }
