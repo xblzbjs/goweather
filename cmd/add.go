@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"goweather/city"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -14,8 +16,16 @@ var addCmd = &cobra.Command{
 }
 
 func addRun(cmd *cobra.Command, args []string) {
+	items, err := city.ReadItems(dataFile)
+	if err != nil {
+		log.Printf("%v", err)
+	}
 	for _, x := range args {
-		fmt.Println(x)
+		items = append(items, city.Item{Text: x})
+	}
+	err = city.SaveItems(dataFile, items)
+	if err != nil {
+		fmt.Errorf("%v", err)
 	}
 }
 
