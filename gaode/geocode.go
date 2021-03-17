@@ -32,8 +32,6 @@ type GeocodeResult struct {
 	Level    string
 }
 
-//
-
 // GeocodeResponse 高德地图地理编码响应对象
 type GeocodeResponse struct {
 	Status   string
