@@ -1,19 +1,11 @@
-// @Title  			geocode.go
-// @Description  	处理高德地图地理编码的API
-// @Author  		xblzbjs
-// @Update  		2021-3-4
-
+// 处理高德地图地理编码的API
 package gaode
 
 import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"goweather/config"
-	"log"
 	"net/url"
-
-	"github.com/spf13/viper"
 )
 
 // GeocodeResult 地理编码结构体
@@ -41,29 +33,13 @@ type GeocodeResponse struct {
 	Geocodes []GeocodeResult
 }
 
-func init() {
-	var configuration config.Configuration
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file, %s", err)
-	}
-	err := viper.Unmarshal(&configuration)
-	if err != nil {
-		log.Fatalf("unable to decode into struct, %v", err)
-	}
-
-	log.Printf("gaode api key is %s", configuration.Api.GaoDe)
-	log.Printf("openweather apikey is %s", configuration.Api.OpenWeather)
-}
-
 // getLocationForAddress 将详细的结构化地址转换为高德经纬度坐标
 func getLocationForAddress(address string, city string) (location string, err error) {
 	escAddress := url.QueryEscape(address)
 	escCity := url.QueryEscape(city)
+
 	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s",
-		gaoDeKey,
+		GetKey(),
 		escAddress,
 		escCity,
 	)

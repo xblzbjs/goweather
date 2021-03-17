@@ -36,5 +36,6 @@ func TestGetLocationForAddress(t *testing.T) {
 	if geocode.Status != "1" || len(geocode.Geocodes) < 1 {
 		errors.New(fmt.Sprintf("GetLocationRequest Failed: %s", geocode.Status))
 	}
-
+	t.Log(geocode.Geocodes[0].Location)
+	t.Logf("Status:%s", geocode.Status)
 }

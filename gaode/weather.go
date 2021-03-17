@@ -1,7 +1,5 @@
-// @Title  			weather.go
-// @Description  	处理高德地图天气查询的API
-// @Author  		xblzbjs
-// @Update  		2021-3-4
+// 处理高德地图天气查询的API
+
 package gaode
 
 import (
@@ -55,16 +53,10 @@ type WeatherResponse struct {
 	Forecast *[]ForecastResult
 }
 
-type WeatherResponseOneCall struct {
-	Current *OpenWeatherResponseCurrent
-	Hourly  *[]OpenWeatherResponseHourly
-	Daily   *[]OpenWeatherResponseDaily
-}
-
 // getWeatherForCity 获取城市天气
 func getWeatherForCity(city string) (weather WeatherResponse, err error) {
 	u := fmt.Sprintf("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s",
-		configs.Key.OpenWeatherKey,
+		GetKey(),
 		city,
 	)
 	res, err := httpClient.Get(u)
