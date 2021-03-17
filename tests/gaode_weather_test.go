@@ -13,9 +13,10 @@ import (
 func TestGetWeatherForCity(t *testing.T) {
 	var httpClient http.Client
 	var weather = gaode.WeatherResponse{}
+
 	escCity := url.QueryEscape("深圳")
 	t.Log(gaode.GetKey())
-	u := fmt.Sprintf("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s",
+	u := fmt.Sprintf("https://restapi.amap.com/v3/weather/weatherInfo?extensions=all&key=%s&city=%s",
 		"5b17489a1ab8e8034e8546a7389e5ff6",
 		escCity,
 	)
@@ -31,6 +32,6 @@ func TestGetWeatherForCity(t *testing.T) {
 	if res.Status != "1" {
 		t.Logf("GaoDeWeatherRequest Failed: %s", res.Status)
 	}
-	t.Log(weather.Status)
-	t.Log(weather.Info)
+	t.Log(weather)
+	t.Log(json.NewDecoder(res.Body).Decode(&weather))
 }

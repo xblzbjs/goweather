@@ -1,8 +1,10 @@
 package main
 
 import (
+	"flag"
 	"goweather/config"
 	"log"
+	"os"
 
 	"net/http"
 
@@ -20,15 +22,14 @@ const (
 	UnitsMetric           = "metric"
 )
 
-// func exitInvalidArguments() {
-// 	// 若不规范的命令行参数，退出
-// 	println("\nUsage: goweather [ -period=current|hourly|daily ] [ -units=C(摄氏度)|F(华氏度) ] <地点>...\n")
-// 	flag.Usage()
-// 	println()
-// 	os.Exit(2)
-// }
+// exitInvalidArguments 若不规范的命令行参数，退出
+func exitInvalidArguments() {
+	println("\nUsage: goweather [ -period=current|hourly|daily ] [ -units=C(摄氏度)|F(华氏度) ] <地点>...\n")
+	flag.Usage()
+	os.Exit(2)
+}
 
-func main() {
+func init() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")
@@ -45,6 +46,10 @@ func main() {
 	openWeatherKey := configuration.Api.OpenWeather
 	log.Printf("gaode api key is %s", gaoDeKey)
 	log.Printf("openweather apikey is %s", openWeatherKey)
+}
+
+func main() {
+
 	// 	httpClient = http.Client{
 	// 		Timeout: time.Second * 10,
 	// 	}

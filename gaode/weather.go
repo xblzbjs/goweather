@@ -10,47 +10,47 @@ import (
 
 // LivesResult 实况天气数据信息
 type LivesResult struct {
-	Province      string
-	City          string
-	Adcode        string
-	Weather       string
-	Temperature   string
-	Winddirection string
-	Windpower     string
-	Humidity      string
-	Reporttime    string
+	Province      string `json:"province"`
+	City          string `json:"city"`
+	Adcode        string `json:"adcode"`
+	Weather       string `json:"weather"`
+	Temperature   string `json:"temperature"`
+	Winddirection string `json:"winddirection"`
+	Windpower     string `json:"windpower"`
+	Humidity      string `json:"humidity"`
+	Reporttime    string `json:"reporttime"`
 }
 
 // ForecastResult 预报天气信息数据
 type ForecastResult struct {
-	City       string
-	Adcode     string
-	Province   string
-	Reporttime string
-	Casts      *[]CastsResult
+	City       string        `json:"city"`
+	Adcode     string        `json:"adcode"`
+	Province   string        `json:"province"`
+	Reporttime string        `json:"reporttime"`
+	Casts      []CastsResult `json:"casts"`
 }
 
 // CastsResult 预报数据list结构，元素cast,按顺序为当天、第二天、第三天的预报数据,可预测未来三天的天气数据
 type CastsResult struct {
-	Data         string
-	Week         string
-	Dayweather   string
-	Nightweather string
-	Daytemp      string
-	Nighttemp    string
-	Daywind      string
-	Daypower     string
-	Nightpower   string
+	Data         string `json:"data"`
+	Week         string `json:"week"`
+	Dayweather   string `json:"dayweather"`
+	Nightweather string `json:"nightweather"`
+	Daytemp      string `json:"daytemp"`
+	Nighttemp    string `json:"nighttemp"`
+	Daywind      string `json:"daywind"`
+	Daypower     string `json:"daypower"`
+	Nightpower   string `json:"nightpower"`
 }
 
 // WeatherResponse	天气API响应结构
 type WeatherResponse struct {
-	Status   string
-	Count    string
-	Info     string
-	Infocode string
-	Lives    *[]LivesResult
-	Forecast *[]ForecastResult
+	Status    string           `json:"status"`
+	Count     string           `json:"count"`
+	Info      string           `json:"info"`
+	Infocode  string           `json:"infocode"`
+	Lives     []LivesResult    `json:"lives"`
+	Forecasts []ForecastResult `json:"forecasts"`
 }
 
 // getWeatherForCity 获取城市天气

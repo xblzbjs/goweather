@@ -10,27 +10,27 @@ import (
 
 // GeocodeResult 地理编码结构体
 type GeocodeResult struct {
-	FormattedAddress string
-	Country          string
-	Province         string
-	Citycode         string
-	City             string
-	District         string
+	FormattedAddress string `json:"formatted_address"`
+	Country          string `json:"country"`
+	Province         string `json:"province"`
+	Citycode         string `json:"citycode"`
+	City             string `json:"city"`
+	District         string `json:"district"`
 	// TODO：添加township,neighborhood结构体,building结构体
-	Adcode   string
-	Street   string
-	Number   string
-	Location string
-	Level    string
+	Adcode   string `json:"adcode"`
+	Street   string `json:"street"`
+	Number   string `json:"number"`
+	Location string `json:"location"`
+	Level    string `json:"level"`
 }
 
 // GeocodeResponse 高德地图地理编码响应对象
 type GeocodeResponse struct {
-	Status   string
-	Count    string
-	Info     string
-	Infocode string
-	Geocodes []GeocodeResult
+	Status   string          `json:"status"`
+	Count    string          `json:"count"`
+	Info     string          `json:"info"`
+	Infocode string          `json:"infocode"`
+	Geocodes []GeocodeResult `json:"geocodes"`
 }
 
 // getLocationForAddress 将详细的结构化地址转换为高德经纬度坐标
