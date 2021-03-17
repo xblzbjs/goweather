@@ -2,7 +2,6 @@ package tests
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"goweather/gaode"
 	"net/http"
@@ -34,7 +33,7 @@ func TestGetLocationForAddress(t *testing.T) {
 		t.Log(err)
 	}
 	if geocode.Status != "1" || len(geocode.Geocodes) < 1 {
-		errors.New(fmt.Sprintf("GetLocationRequest Failed: %s", geocode.Status))
+		t.Logf("GetLocationRequest Failed: %s", geocode.Status)
 	}
 	t.Log(geocode.Geocodes[0].Location)
 	t.Logf("Status:%s", geocode.Status)
