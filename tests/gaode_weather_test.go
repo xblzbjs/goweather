@@ -13,11 +13,10 @@ import (
 func TestGetWeatherForCity(t *testing.T) {
 	var httpClient http.Client
 	var weather = gaode.WeatherResponse{}
-
 	escCity := url.QueryEscape("深圳")
 	t.Log(gaode.GetKey())
 	u := fmt.Sprintf("https://restapi.amap.com/v3/weather/weatherInfo?extensions=all&key=%s&city=%s",
-		"5b17489a1ab8e8034e8546a7389e5ff6",
+		gaode.GetKey(),
 		escCity,
 	)
 	res, err := httpClient.Get(u)

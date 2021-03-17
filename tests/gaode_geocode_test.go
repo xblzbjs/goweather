@@ -16,7 +16,7 @@ func TestGetLocationForAddress(t *testing.T) {
 	escAddress := url.QueryEscape("北京市朝阳区阜通东大街6号")
 	escCity := url.QueryEscape("北京")
 	u := fmt.Sprintf("https://restapi.amap.com/v3/geocode/geo?key=%s&address=%s&city=%s",
-		"5b17489a1ab8e8034e8546a7389e5ff6",
+		gaode.GetKey(),
 		escAddress,
 		escCity,
 	)

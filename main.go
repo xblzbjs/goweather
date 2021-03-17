@@ -2,13 +2,10 @@ package main
 
 import (
 	"flag"
-	"goweather/config"
-	"log"
+	"goweather/cmd"
 	"os"
 
 	"net/http"
-
-	"github.com/spf13/viper"
 )
 
 var httpClient http.Client
@@ -29,27 +26,8 @@ func exitInvalidArguments() {
 	os.Exit(2)
 }
 
-func init() {
-	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath(".")
-	var configuration config.Configuration
-
-	if err := viper.ReadInConfig(); err != nil {
-		log.Fatalf("Error reading config file, %s", err)
-	}
-	err := viper.Unmarshal(&configuration)
-	if err != nil {
-		log.Fatalf("unable to decode into struct, %v", err)
-	}
-	gaoDeKey := configuration.Api.GaoDe
-	openWeatherKey := configuration.Api.OpenWeather
-	log.Printf("gaode api key is %s", gaoDeKey)
-	log.Printf("openweather apikey is %s", openWeatherKey)
-}
-
 func main() {
-
+	cmd.Execute()
 	// 	httpClient = http.Client{
 	// 		Timeout: time.Second * 10,
 	// 	}

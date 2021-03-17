@@ -6,18 +6,33 @@ package gaode
 
 import (
 	"goweather/config"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 var httpClient http.Client
 var geocode GeocodeResponse
-var configuration config.Configuration
 
 // GetKey 获取key
 func GetKey() string {
-	return configuration.Api.GaoDe
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("../")
+	var configuration config.Configuration
+
+	if err := viper.ReadInConfig(); err != nil {
+		log.Fatalf("Error reading config file, %s", err)
+	}
+	err := viper.Unmarshal(&configuration)
+	if err != nil {
+		log.Fatalf("unable to decode into struct, %v", err)
+	}
+	gaoDeKey := configuration.Api.GaoDe
+	return gaoDeKey
 }
 
 // LocationToLatLon 将字符串的经度维度转化成浮点数经度和维度
