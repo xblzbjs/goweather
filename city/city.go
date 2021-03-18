@@ -7,7 +7,7 @@ import (
 )
 
 type Item struct {
-	Text string
+	Name string
 }
 
 func SaveItems(filename string, items []Item) error {

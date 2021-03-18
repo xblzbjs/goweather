@@ -21,7 +21,7 @@ func addRun(cmd *cobra.Command, args []string) {
 		log.Printf("%v", err)
 	}
 	for _, x := range args {
-		items = append(items, city.Item{Text: x})
+		items = append(items, city.Item{Name: x})
 	}
 	err = city.SaveItems(dataFile, items)
 	if err != nil {

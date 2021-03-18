@@ -32,13 +32,6 @@ func main() {
 	// 		Timeout: time.Second * 10,
 	// 	}
 
-	// 	//命令行
-	// 	units := flag.String("units", "C", "C(摄氏度) | F(华氏度)")
-	// 	period := flag.String("period", "current", "current | hourly | daily")
-	// 	flag.Parse()
-
-	// 	places := flag.Args() //地址
-
 	// 	if len(places) < 1 {
 	// 		exitInvalidArguments()
 	// 	}
