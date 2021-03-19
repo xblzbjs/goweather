@@ -12,11 +12,8 @@ import (
 var cityArgs string
 
 var (
-	dataFile   string
-	wetherType string
-	cityList   string
-	Unit       string
-	Period     string
+	dataFile string
+	cityList string
 )
 
 var rootCmd = &cobra.Command{
@@ -40,10 +37,5 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile",
 		home+string(os.PathSeparator)+".city.json",
 		"data file to store city weather info")
-	rootCmd.PersistentFlags().StringVarP(&wetherType, "type", "t",
-		"base", "气象类型(base:返回实况天气 all:返回预报天气)")
-	rootCmd.PersistentFlags().StringVarP(&Unit, "unit", "u", "C", "C｜F")
 
-	rootCmd.PersistentFlags().StringVarP(&Period, "current", "p", "current",
-		"current｜hourly｜daily")
 }

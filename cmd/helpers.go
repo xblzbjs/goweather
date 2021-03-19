@@ -11,10 +11,8 @@ import (
 // ExecuteCommand name:主命令  subname:子命令  args:参数
 func ExecuteCommand(name string, subname string, args ...string) (string, error) {
 	args = append([]string{subname}, args...)
-
 	cmd := exec.Command(name, args...)
 	bytes, err := cmd.CombinedOutput()
-
 	return string(bytes), err
 }
 
