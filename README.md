@@ -1,33 +1,37 @@
-# goweather
+# go weather
 
-简单的命令行天气客户端使用OpenWeather API和高德地图地理编码。
+## Overview
 
-## 使用
+A simple command line weather client uses Gaode Weather Api
 
-### 第一步
+## Installting
 
-在`constants.go`文件中输入你的OpenWeatherApiKey（需要申请）
-
-### 第二步
-
-在`constants.go`文件中输入你的GaoDeApiKey（需要申请）
-
-## 命令行参数：
-
-```shell
-Usage: goweather [ -period=current|hourly|daily ] [ -units=C(摄氏度)|F(华氏度) ] <地点>...
-
-Usage of goweather:
-  -period string
-        current | hourly | daily (default "current")
-  -units string
-        C(摄氏度) | F(华氏度) (default "C")
+```bash
 
 ```
 
+## Getting Start
 
+1. Apply for [Gaode Api](https://lbs.amap.com/dev/key/app) and [OpenweatherMap Api](https://openweathermap.org/api)
 
-## 例子
+2. Create a `config.yml` file in the project path
+
+   ```bash
+   goweather
+   ├── README.md
+   ...
+   ├── config.yml		# Create Here
+   ...
+   ├── sample_config.yml # Module
+   ```
+
+   
+
+3. 
+
+## 
+
+## Example
 
 ```shell
 $ goweather -period=daily -units=C 深圳市南山区
@@ -42,10 +46,7 @@ Tuesday    2/ 2   High: 21.63C Low: 18.15C | Humidity: 54% | 晴
 Wednesday  2/ 3   High: 20.85C Low: 16.73C | Humidity: 59% | 多云
 ```
 
-
-
 ## TODO:
 
-- 完善高德地图地理编码
-- 高德天气查询
-- Google Map PlatForm  API整合
+- OpenWeather Api with Google Map PlatForm
+- Translate
