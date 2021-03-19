@@ -20,8 +20,8 @@ var geocode GeocodeResponse
 // GetKey 获取key
 func GetKey() string {
 	viper.SetConfigName("config")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath("../")
+	viper.SetConfigType("yml")
+	viper.AddConfigPath("./")
 	var configuration config.Configuration
 
 	if err := viper.ReadInConfig(); err != nil {

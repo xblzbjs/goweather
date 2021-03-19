@@ -9,7 +9,13 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var dataFile string
+var cityArgs string
+
+var (
+	dataFile string
+	cityList string
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "goweather",
 	Short: "This is a weather application",
@@ -30,5 +36,6 @@ func init() {
 	}
 	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile",
 		home+string(os.PathSeparator)+".city.json",
-		"data file to store city")
+		"data file to store city weather info")
+
 }

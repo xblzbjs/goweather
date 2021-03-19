@@ -9,8 +9,8 @@ import (
 	"testing"
 )
 
-// TestGetWeatherForCity 获取城市天气的测试
-func TestGetWeatherForCity(t *testing.T) {
+// TestGetAllWeatherForCity 获取城市天气的测试
+func TestGetAllWeatherForCity(t *testing.T) {
 	var httpClient http.Client
 	var weather = gaode.WeatherResponse{}
 	escCity := url.QueryEscape("深圳")
@@ -31,8 +31,8 @@ func TestGetWeatherForCity(t *testing.T) {
 	if res.Status != "200 OK" {
 		t.Logf("GaoDeWeatherRequest Failed: %s", res.Status)
 	}
-	t.Logf("今天的天气:%v", (weather.Forecasts[0].Casts[0]))
-	t.Logf("明天的天气:%v", weather.Forecasts[0].Casts[1])
-	t.Logf("后天的天气:%v", weather.Forecasts[0].Casts[2])
-	t.Logf("大后天的天气:%v", weather.Forecasts[0].Casts[3])
+	// t.Logf("今天的天气:%v", weatherForecasts[0].Casts[0])
+	// t.Logf("明天的天气:%v", weather.Forecasts[0].Casts[1])
+	// t.Logf("后天的天气:%v", weather.Forecasts[0].Casts[2])
+	// t.Logf("大后天的天气:%v", weather.Forecasts[0].Casts[3])
 }

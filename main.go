@@ -1,9 +1,7 @@
 package main
 
 import (
-	"flag"
 	"goweather/cmd"
-	"os"
 
 	"net/http"
 )
@@ -19,30 +17,12 @@ const (
 	UnitsMetric           = "metric"
 )
 
-// exitInvalidArguments 若不规范的命令行参数，退出
-func exitInvalidArguments() {
-	println("\nUsage: goweather [ -period=current|hourly|daily ] [ -units=C(摄氏度)|F(华氏度) ] <地点>...\n")
-	flag.Usage()
-	os.Exit(2)
-}
-
 func main() {
 	cmd.Execute()
 	// 	httpClient = http.Client{
 	// 		Timeout: time.Second * 10,
 	// 	}
 
-	// 	//命令行
-	// 	units := flag.String("units", "C", "C(摄氏度) | F(华氏度)")
-	// 	period := flag.String("period", "current", "current | hourly | daily")
-	// 	flag.Parse()
-
-	// 	places := flag.Args() //地址
-
-	// 	if len(places) < 1 {
-	// 		exitInvalidArguments()
-	// 	}
-	// 	// un(单位) -> string
 	// 	// 判断摄氏度和华氏度
 	// 	var un string
 	// 	if strings.ToUpper(*units) == "C" {
@@ -59,10 +39,6 @@ func main() {
 	// 		*period != WeatherPeriodDaily {
 	// 		exitInvalidArguments()
 	// 	}
-
-	// 	// 异步
-	// 	chs := make([]chan OpenWeatherResponseOneCall, len(places))
-	// 	errChs := make([]chan error, len(places))
 
 	// 	start := time.Now()
 
@@ -94,35 +70,4 @@ func main() {
 
 	// }
 
-	// func getWeatherForPlace(place string, units string, period string) (w OpenWeatherResponseOneCall, err error) {
-	// 	location, err := getLocationForPlace(place)
-	// 	if err != nil {
-	// 		return w, err
-	// 	}
-	// 	lat, lon := LocationToLatLon(location)
-	// 	return getWeatherForLatLon(lat, lon, units, period)
 }
-
-// func concurrentGetWeatherForPlace(place string, units string, period string, wCh chan OpenWeatherResponseOneCall, errCh chan error) {
-// 	w, err := getWeatherForPlace(place, units, period)
-// 	wCh <- w
-// 	errCh <- err
-// }
-
-// func printWeatherResult(w interface{}, place string, units string) {
-// 	// 打印天气详情
-// 	fmt.Printf("%s的天气:\n", place)
-
-// 	switch w.(type) {
-// 	case OpenWeatherResponseCurrent:
-// 		fmt.Print(w.(OpenWeatherResponseCurrent).Output(units))
-// 	case []OpenWeatherResponseHourly:
-// 		for _, h := range w.([]OpenWeatherResponseHourly) {
-// 			fmt.Print(h.Output(units))
-// 		}
-// 	case []OpenWeatherResponseDaily:
-// 		for _, h := range w.([]OpenWeatherResponseDaily) {
-// 			fmt.Print(h.Output(units))
-// 		}
-// 	}
-// }
